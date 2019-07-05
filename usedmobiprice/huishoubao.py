@@ -8,7 +8,6 @@ import random
 from itertools import product
 from lxml import etree
 
-
 class HSBSpider(object):
     def __init__(self):
         self.headers = {
