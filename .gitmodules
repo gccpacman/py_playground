@@ -1,0 +1,3 @@
+[submodule "py_playground_private"]
+	path = py_playground_private
+	url = https://github.com/gccpacman/py_playground_private.git
