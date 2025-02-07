@@ -1,34 +1,45 @@
-FROM mcr.microsoft.com/vscode/devcontainers/python:3.11
+FROM mcr.microsoft.com/devcontainers/base:debian
+# FROM mcr.microsoft.com/devcontainers/base:jammy 
 
-# Install dependencies
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends \
+ARG DEBIAN_FRONTEND=noninteractive
+ARG USER=vscode
+
+RUN DEBIAN_FRONTEND=noninteractive \
+    && apt-get update \ 
+    && apt-get install -y build-essential --no-install-recommends make \
+        ca-certificates \
+        git \
+        libssl-dev \
+        zlib1g-dev \
+        libbz2-dev \
+        libreadline-dev \
+        libsqlite3-dev \
+        wget \
+        curl \
+        llvm \
+        libncurses5-dev \
+        xz-utils \
+        tk-dev \
         libxml2-dev \
         libxmlsec1-dev \
         libffi-dev \
-        liblzma-dev \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+        liblzma-dev
 
-# Install pyenv and poetry
-USER vscode
-ENV PYENV_ROOT="/home/vscode/.pyenv"
-ENV PATH="${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:/home/vscode/.local/bin:$PATH"
+# Python and poetry installation
+USER $USER
+ARG HOME="/home/$USER"
+ARG PYTHON_VERSION=3.11
+# ARG PYTHON_VERSION=3.10
 
-RUN curl https://pyenv.run | bash \
-    && pyenv install 3.11.11 \
-    && pyenv global 3.11.11 \
+ENV PYENV_ROOT="${HOME}/.pyenv"
+ENV PATH="${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:${HOME}/.local/bin:$PATH"
+
+RUN echo "done 0" \
+    && curl https://pyenv.run | bash \
+    && echo "done 1" \
+    && pyenv install ${PYTHON_VERSION} \
+    && echo "done 2" \
+    && pyenv global ${PYTHON_VERSION} \
+    && echo "done 3" \
     && curl -sSL https://install.python-poetry.org | python3 - \
     && poetry config virtualenvs.in-project true
-
-# Set the working directory
-WORKDIR /workspace
-
-# Install project dependencies
-COPY pyproject.toml poetry.lock ./
-RUN poetry install
-
-# Copy the rest of the application code
-COPY . .
-
-# Set the entry point
-CMD ["poetry", "run", "python", "helloworld.py"]
