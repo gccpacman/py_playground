@@ -4,6 +4,16 @@ import time
 """
 参考链接:
 https://freedium.cfd/https://python.plainenglish.io/5-python-decorators-that-will-transform-your-coding-workflow-38a9c199f7d9
+
+Python decorators provide an elegant way to enhance and extend the functionality of your code. They not only reduce redundancy but also make your codebase more modular and readable.
+Python 装饰器提供了一种优雅的方式来增强和扩展代码的功能。它们不仅减少了冗余，还使代码库更加模块化和易于阅读。
+
+As Donald Knuth once remarked, "Programs are meant to be read by humans and only incidentally for computers to execute."
+正如唐纳德·克努斯曾经所说：“程序是为了被人类阅读而编写的，仅仅是偶尔让计算机执行。”
+
+Decorators embody this philosophy by enabling cleaner, more maintainable code.
+装饰器体现了这一理念，通过使代码更清晰、更易维护。
+
 """
 
 def time_logger(func):
